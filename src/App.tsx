@@ -33,6 +33,8 @@ import AdminRoute from './components/AdminRoute';
 import Layout from './components/Layout';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
+import Terms from './pages/Terms';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function App() {
   return (
@@ -43,11 +45,14 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/products/:id" element={<ProductDetails />} />
+          <Route path="/pages/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/pages/:slug" element={<PageViewer />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/plans" element={<Plans />} />
           <Route path="/news" element={<News />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={
             <PrivateRoute>
               <Dashboard />

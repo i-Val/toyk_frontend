@@ -41,8 +41,8 @@ const Footer = () => {
                     <h4>Quick Links</h4>
                     <ul style={{ listStyle: 'none', padding: 0 }}>
                         <li><Link to="/pages/about-us" style={{ color: '#ccc', textDecoration: 'none' }}>About Us</Link></li>
-                        <li><Link to="/pages/terms-and-conditions" style={{ color: '#ccc', textDecoration: 'none' }}>Terms & Conditions</Link></li>
-                        <li><Link to="/pages/privacy-policy" style={{ color: '#ccc', textDecoration: 'none' }}>Privacy Policy</Link></li>
+                        <li><Link to="/terms" style={{ color: '#ccc', textDecoration: 'none' }}>Terms & Conditions</Link></li>
+                        <li><Link to="/privacy-policy" style={{ color: '#ccc', textDecoration: 'none' }}>Privacy Policy</Link></li>
                         <li><Link to="/contact" style={{ color: '#ccc', textDecoration: 'none' }}>Contact Us</Link></li>
                         <li><Link to="/plans" style={{ color: '#ccc', textDecoration: 'none' }}>Membership Plans</Link></li>
                     </ul>
