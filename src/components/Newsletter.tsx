@@ -18,22 +18,76 @@ const Newsletter = () => {
     };
 
     return (
-        <div style={{ background: '#f4f4f4', padding: '40px 20px', textAlign: 'center', marginTop: '40px' }}>
-            <h2>Join our newsletter</h2>
-            <form onSubmit={subscribe} style={{ marginTop: '20px' }}>
-                <input 
-                    type="email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    placeholder="Enter Your E-mail" 
-                    required 
-                    style={{ padding: '10px', width: '300px', marginRight: '10px' }}
-                />
-                <button type="submit" style={{ padding: '10px 20px', background: '#0056b3', color: 'white', border: 'none', cursor: 'pointer' }}>
-                    Subscribe
-                </button>
-            </form>
-            {message && <p style={{ marginTop: '10px', color: message.includes('success') ? 'green' : 'red' }}>{message}</p>}
+        <div style={{ maxWidth: '1200px', margin: '60px auto', padding: '0 20px' }}>
+            <div style={{ 
+                background: '#0056b3', 
+                borderRadius: '50px', 
+                padding: '30px 50px', 
+                display: 'flex', 
+                flexWrap: 'wrap',
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                gap: '20px',
+                boxShadow: '0 5px 15px rgba(0,0,0,0.1)'
+            }}>
+                <h2 style={{ 
+                    fontSize: '2rem', 
+                    fontWeight: '700', 
+                    color: 'white',
+                    margin: 0,
+                    whiteSpace: 'nowrap'
+                }}>
+                    Join our newsletter
+                </h2>
+                
+                <form onSubmit={subscribe} style={{ display: 'flex', gap: '15px', flex: 1, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+                    <input 
+                        type="email" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
+                        placeholder="Enter Your E-mail" 
+                        required 
+                        style={{ 
+                            padding: '15px 20px', 
+                            border: 'none', 
+                            borderRadius: '6px', 
+                            fontSize: '1rem',
+                            flex: '1 1 250px',
+                            maxWidth: '450px',
+                            outline: 'none'
+                        }}
+                    />
+                    <button 
+                        type="submit" 
+                        style={{ 
+                            padding: '15px 40px', 
+                            background: '#dc3545', 
+                            color: 'white', 
+                            border: 'none', 
+                            cursor: 'pointer', 
+                            fontSize: '1rem', 
+                            fontWeight: '600',
+                            borderRadius: '6px',
+                            whiteSpace: 'nowrap',
+                            transition: 'background 0.2s'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.background = '#c82333'}
+                        onMouseOut={(e) => e.currentTarget.style.background = '#dc3545'}
+                    >
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+            {message && (
+                <div style={{ 
+                    marginTop: '20px', 
+                    textAlign: 'center',
+                    padding: '10px', 
+                    color: message.includes('success') ? 'green' : 'red'
+                }}>
+                    {message}
+                </div>
+            )}
         </div>
     );
 };

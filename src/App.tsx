@@ -35,6 +35,7 @@ import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import AboutUs from './pages/AboutUs';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path="/products" element={<ProductList />} />
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/pages/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/pages/about-us" element={<AboutUs />} />
           <Route path="/pages/:slug" element={<PageViewer />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/plans" element={<Plans />} />
@@ -53,6 +55,7 @@ function App() {
           <Route path="/news/:slug" element={<NewsDetail />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/about-us" element={<AboutUs />} />
           <Route path="/dashboard" element={
             <PrivateRoute>
               <Dashboard />
