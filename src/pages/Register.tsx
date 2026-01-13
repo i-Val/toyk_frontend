@@ -47,37 +47,55 @@ const Register = () => {
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px' }}>
-            <h2>Register</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '10px' }}>
-                    <label>First Name:</label>
-                    <input type="text" name="first_name" onChange={handleChange} required style={{ width: '100%', padding: '8px' }} />
+        <div className="min-h-screen flex items-center justify-center bg-[#f0f2f5] p-5">
+            <div className="w-full max-w-[500px] bg-white p-10 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
+                <h2 className="text-center text-[#333] mb-8 text-[2rem]">Create Account</h2>
+                {error && <div className="bg-[#ffebee] text-[#c62828] p-2.5 rounded mb-5 text-center">{error}</div>}
+                
+                <form onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label className="block mb-2 text-[#555] font-medium">First Name</label>
+                            <input type="text" name="first_name" onChange={handleChange} required placeholder="First Name" className="w-full p-3 rounded border border-[#ddd] outline-none text-base bg-white text-[#333] focus:border-[#007bff]" />
+                        </div>
+                        <div>
+                            <label className="block mb-2 text-[#555] font-medium">Last Name</label>
+                            <input type="text" name="last_name" onChange={handleChange} required placeholder="Last Name" className="w-full p-3 rounded border border-[#ddd] outline-none text-base bg-white text-[#333] focus:border-[#007bff]" />
+                        </div>
+                    </div>
+
+                    <div className="mb-5">
+                        <label className="block mb-2 text-[#555] font-medium">Phone Number</label>
+                        <input type="text" name="phone" onChange={handleChange} required placeholder="Enter phone number" className="w-full p-3 rounded border border-[#ddd] outline-none text-base bg-white text-[#333] focus:border-[#007bff]" />
+                    </div>
+
+                    <div className="mb-5">
+                        <label className="block mb-2 text-[#555] font-medium">Email Address</label>
+                        <input type="email" name="email" onChange={handleChange} required placeholder="Enter email address" className="w-full p-3 rounded border border-[#ddd] outline-none text-base bg-white text-[#333] focus:border-[#007bff]" />
+                    </div>
+
+                    <div className="mb-5">
+                        <label className="block mb-2 text-[#555] font-medium">Password</label>
+                        <input type="password" name="password" onChange={handleChange} required placeholder="Create password" className="w-full p-3 rounded border border-[#ddd] outline-none text-base bg-white text-[#333] focus:border-[#007bff]" />
+                    </div>
+
+                    <div className="mb-8">
+                        <label className="block mb-2 text-[#555] font-medium">Confirm Password</label>
+                        <input type="password" name="password_confirmation" onChange={handleChange} required placeholder="Confirm password" className="w-full p-3 rounded border border-[#ddd] outline-none text-base bg-white text-[#333] focus:border-[#007bff]" />
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        className="w-full p-3 bg-[#007bff] text-white border-none rounded text-base font-semibold cursor-pointer transition-colors duration-300 hover:bg-[#0056b3]"
+                    >
+                        Register
+                    </button>
+                </form>
+
+                <div className="mt-5 text-center text-[#666]">
+                    Already have an account? <Link to="/login" className="text-[#007bff] no-underline font-medium hover:underline">Sign in here</Link>
                 </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Last Name:</label>
-                    <input type="text" name="last_name" onChange={handleChange} required style={{ width: '100%', padding: '8px' }} />
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Phone:</label>
-                    <input type="text" name="phone" onChange={handleChange} required style={{ width: '100%', padding: '8px' }} />
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Email:</label>
-                    <input type="email" name="email" onChange={handleChange} required style={{ width: '100%', padding: '8px' }} />
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Password:</label>
-                    <input type="password" name="password" onChange={handleChange} required style={{ width: '100%', padding: '8px' }} />
-                </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Confirm Password:</label>
-                    <input type="password" name="password_confirmation" onChange={handleChange} required style={{ width: '100%', padding: '8px' }} />
-                </div>
-                <button type="submit" style={{ padding: '10px 20px' }}>Register</button>
-            </form>
-            <p>Already have an account? <Link to="/login">Login</Link></p>
+            </div>
         </div>
     );
 };
