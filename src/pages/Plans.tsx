@@ -2,12 +2,37 @@ import { useEffect, useState } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useToast, usePageLoader } from '../components/UiFeedbackProvider';
+
+type Plan = {
+    id: number;
+    title: string;
+    description: string | null;
+    price: number;
+    currency_code: string;
+    days: number;
+};
 
 const Plans = () => {
-    const [plans, setPlans] = useState<any[]>([]);
+    const [plans, setPlans] = useState<Plan[]>([]);
     const [loading, setLoading] = useState(true);
+    const [subscribing, setSubscribing] = useState(false);
     const { user } = useAuth();
     const navigate = useNavigate();
+    const { showToast } = useToast();
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         api.get('/plans')
@@ -27,19 +52,26 @@ const Plans = () => {
             return;
         }
 
-        if (confirm("Confirm subscription to this plan? (Mock Payment)")) {
-            try {
-                await api.post('/subscribe', { plan_id: planId });
-                alert("Subscribed successfully!");
-                navigate('/dashboard');
-            } catch (err) {
-                console.error("Failed to subscribe", err);
-                alert("Failed to subscribe");
+        setSubscribing(true);
+
+        try {
+            const res = await api.post('/subscribe/init', { plan_id: planId });
+            const authorizationUrl = res.data?.authorization_url;
+
+            if (authorizationUrl) {
+                window.location.href = authorizationUrl;
+            } else {
+                showToast('Failed to start payment.', 'error');
             }
+        } catch (err) {
+            console.error("Failed to start payment", err);
+            showToast('Failed to start payment.', 'error');
+        } finally {
+            setSubscribing(false);
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return null;
 
     return (
         <div style={{ padding: '40px', maxWidth: '1200px', margin: 'auto' }}>
@@ -62,17 +94,19 @@ const Plans = () => {
                         <button 
                             style={{ 
                                 padding: '12px 30px', 
-                                background: '#007bff', 
+                                background: subscribing ? '#6c757d' : '#007bff', 
                                 color: 'white', 
                                 border: 'none', 
                                 borderRadius: '25px', 
                                 fontSize: '1.1em',
-                                cursor: 'pointer',
-                                marginTop: '20px'
+                                cursor: subscribing ? 'not-allowed' : 'pointer',
+                                marginTop: '20px',
+                                opacity: subscribing ? 0.8 : 1
                             }}
                             onClick={() => handleSubscribe(plan.id)}
+                            disabled={subscribing}
                         >
-                            Choose Plan
+                            {subscribing ? 'Redirecting...' : 'Choose Plan'}
                         </button>
                     </div>
                 ))}

@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             // Validate token or fetch user if not present
             api.get('/user')
                 .then(response => {
-                    setUser(response.data);
+                    setUser((prev) => ({ ...(prev ?? {}), ...response.data }));
                 })
                 .catch(() => {
                     logout();

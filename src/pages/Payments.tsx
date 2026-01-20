@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import UserSidebar from '../components/UserSidebar';
 import api from '../api/axios';
+import { usePageLoader } from '../components/UiFeedbackProvider';
 
 interface Payment {
     id: number;
@@ -17,6 +18,19 @@ const Payments = () => {
     const [payments, setPayments] = useState<Payment[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         const fetchPayments = async () => {
@@ -39,7 +53,6 @@ const Payments = () => {
             <div style={{ flex: 1, border: '1px solid #ddd', padding: '20px', borderRadius: '4px' }}>
                 <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px', marginTop: 0 }}>Payments</h2>
                 
-                {loading && <p>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 
                 {!loading && payments.length === 0 && (

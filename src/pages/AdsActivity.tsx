@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import UserSidebar from '../components/UserSidebar';
 import { Link } from 'react-router-dom';
+import { usePageLoader } from '../components/UiFeedbackProvider';
 
 interface Product {
     id: number;
@@ -14,6 +15,19 @@ const AdsActivity = () => {
     const [ads, setAds] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         const fetchAds = async () => {
@@ -37,7 +51,6 @@ const AdsActivity = () => {
             <div style={{ flex: 1, border: '1px solid #ddd', padding: '20px', borderRadius: '4px' }}>
                 <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px', marginTop: 0 }}>Ads Activity</h2>
                 
-                {loading && <p>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 
                 {!loading && ads.length === 0 && <p>No activity found.</p>}

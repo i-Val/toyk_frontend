@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import UserSidebar from '../components/UserSidebar';
 import api from '../api/axios';
+import { useToast, useConfirm, usePageLoader } from '../components/UiFeedbackProvider';
 
 interface User {
     id: number;
@@ -14,6 +15,21 @@ const Following = () => {
     const [following, setFollowing] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { showToast } = useToast();
+    const { confirm } = useConfirm();
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         const fetchFollowing = async () => {
@@ -31,12 +47,19 @@ const Following = () => {
     }, []);
 
     const handleUnfollow = async (id: number) => {
-        if (!window.confirm('Are you sure you want to unfollow?')) return;
+        const confirmed = await confirm({
+            title: 'Unfollow User',
+            message: 'Are you sure you want to unfollow?',
+            confirmText: 'Unfollow',
+            cancelText: 'Cancel',
+        });
+        if (!confirmed) return;
         try {
             await api.post(`/user/unfollow/${id}`);
             setFollowing(following.filter(user => user.id !== id));
+            showToast('Unfollowed successfully');
         } catch (err) {
-            alert('Failed to unfollow');
+            showToast('Failed to unfollow', 'error');
         }
     };
 
@@ -46,7 +69,6 @@ const Following = () => {
             <div style={{ flex: 1, border: '1px solid #ddd', padding: '20px', borderRadius: '4px' }}>
                 <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px', marginTop: 0 }}>My Following</h2>
                 
-                {loading && <p>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 
                 {!loading && following.length === 0 && (

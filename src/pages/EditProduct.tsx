@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useToast, useConfirm } from '../components/UiFeedbackProvider';
 
 const EditProduct = () => {
     const { id } = useParams<{ id: string }>();
@@ -22,6 +23,8 @@ const EditProduct = () => {
     const [types, setTypes] = useState<any[]>([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
+    const { showToast } = useToast();
+    const { confirm } = useConfirm();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -80,23 +83,31 @@ const EditProduct = () => {
                 },
                 (error) => {
                     console.error("Error getting location:", error);
-                    alert("Could not get your location.");
+                    showToast("Could not get your location.", 'error');
                 }
             );
         } else {
-            alert("Geolocation is not supported by this browser.");
+            showToast("Geolocation is not supported by this browser.", 'error');
         }
     };
 
     const handleDeleteImage = async (imageId: number) => {
-        if (confirm("Delete this image?")) {
-            try {
-                await api.delete(`/products/${id}/images/${imageId}`);
-                setExistingImages(existingImages.filter(img => img.id !== imageId));
-            } catch (err) {
-                console.error("Failed to delete image", err);
-                alert("Failed to delete image");
-            }
+        const confirmed = await confirm({
+            title: 'Delete Image',
+            message: 'Delete this image?',
+            confirmText: 'Delete',
+            cancelText: 'Cancel'
+        });
+        if (!confirmed) {
+            return;
+        }
+        try {
+            await api.delete(`/products/${id}/images/${imageId}`);
+            setExistingImages(prev => prev.filter(img => img.id !== imageId));
+            showToast('Image deleted successfully');
+        } catch (err) {
+            console.error("Failed to delete image", err);
+            showToast("Failed to delete image", 'error');
         }
     };
 
@@ -124,10 +135,12 @@ const EditProduct = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+            showToast('Product updated successfully');
             navigate('/dashboard');
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to update product');
             console.error(err.response?.data);
+            showToast(err.response?.data?.message || 'Failed to update product', 'error');
         }
     };
 

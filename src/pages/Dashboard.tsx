@@ -2,11 +2,27 @@ import { useEffect, useState } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { useToast, useConfirm, usePageLoader } from '../components/UiFeedbackProvider';
 
 const Dashboard = () => {
     const { user } = useAuth();
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const { showToast } = useToast();
+    const { confirm } = useConfirm();
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         fetchMyProducts();
@@ -24,14 +40,22 @@ const Dashboard = () => {
     };
 
     const handleDelete = async (id: number) => {
-        if (confirm("Are you sure you want to delete this product?")) {
-            try {
-                await api.delete(`/products/${id}`);
-                setProducts(products.filter(p => p.id !== id));
-            } catch (error) {
-                console.error("Failed to delete product", error);
-                alert("Failed to delete product");
-            }
+        const confirmed = await confirm({
+            title: 'Delete Product',
+            message: 'Are you sure you want to delete this product?',
+            confirmText: 'Delete',
+            cancelText: 'Cancel'
+        });
+        if (!confirmed) {
+            return;
+        }
+        try {
+            await api.delete(`/products/${id}`);
+            setProducts(prev => prev.filter(p => p.id !== id));
+            showToast('Product deleted successfully');
+        } catch (error) {
+            console.error("Failed to delete product", error);
+            showToast('Failed to delete product', 'error');
         }
     };
 
@@ -53,9 +77,7 @@ const Dashboard = () => {
             </div>
 
             <h2>My Ads</h2>
-            {loading ? (
-                <p>Loading...</p>
-            ) : products.length === 0 ? (
+            {loading ? null : products.length === 0 ? (
                 <p>You haven't posted any ads yet.</p>
             ) : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>

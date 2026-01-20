@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import UserSidebar from '../components/UserSidebar';
 import { Link } from 'react-router-dom';
+import { useToast, useConfirm, usePageLoader } from '../components/UiFeedbackProvider';
 
 interface Product {
     id: number;
@@ -17,6 +18,21 @@ const FreeAds = () => {
     const [ads, setAds] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const { showToast } = useToast();
+    const { confirm } = useConfirm();
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         const fetchAds = async () => {
@@ -34,13 +50,19 @@ const FreeAds = () => {
     }, []);
 
     const handleUpgrade = async (id: number) => {
-        if (!window.confirm('Are you sure you want to upgrade this ad?')) return;
+        const confirmed = await confirm({
+            title: 'Upgrade Ad',
+            message: 'Are you sure you want to upgrade this ad?',
+            confirmText: 'Upgrade',
+            cancelText: 'Cancel'
+        });
+        if (!confirmed) return;
         try {
             await api.post(`/products/${id}/upgrade`);
-            setAds(ads.filter(ad => ad.id !== id));
-            alert('Ad upgraded successfully!');
+            setAds(prev => prev.filter(ad => ad.id !== id));
+            showToast('Ad upgraded successfully!');
         } catch (err) {
-            alert('Failed to upgrade ad');
+            showToast('Failed to upgrade ad', 'error');
         }
     };
 
@@ -51,7 +73,6 @@ const FreeAds = () => {
             <div style={{ flex: 1, border: '1px solid #ddd', padding: '20px', borderRadius: '4px' }}>
                 <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px', marginTop: 0 }}>Free Ads</h2>
                 
-                {loading && <p>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 
                 {!loading && ads.length === 0 && <p>You have no free ads.</p>}

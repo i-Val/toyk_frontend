@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import UserSidebar from '../components/UserSidebar';
+import { useToast, useConfirm } from '../components/UiFeedbackProvider';
 
 const Profile = () => {
     const { user, setUser } = useAuth();
@@ -19,6 +20,8 @@ const Profile = () => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const { showToast } = useToast();
+    const { confirm } = useConfirm();
 
     useEffect(() => {
         if (user) {
@@ -45,8 +48,10 @@ const Profile = () => {
             const res = await api.put('/profile', formData);
             setUser(res.data.user);
             setMessage('Profile updated successfully');
+            showToast('Profile updated successfully');
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to update profile');
+            showToast(err.response?.data?.message || 'Failed to update profile', 'error');
         } finally {
             setLoading(false);
         }
@@ -56,15 +61,22 @@ const Profile = () => {
     const selectStyle = { ...inputStyle, height: '40px' };
 
     const handleDeleteAccount = async () => {
-        if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-            try {
-                await api.delete('/profile');
-                localStorage.removeItem('token');
-                window.location.href = '/login';
-            } catch (error) {
-                console.error("Failed to delete account", error);
-                alert('Failed to delete account');
-            }
+        const confirmed = await confirm({
+            title: 'Delete Account',
+            message: 'Are you sure you want to delete your account? This action cannot be undone.',
+            confirmText: 'Delete',
+            cancelText: 'Cancel'
+        });
+        if (!confirmed) {
+            return;
+        }
+        try {
+            await api.delete('/profile');
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        } catch (error) {
+            console.error("Failed to delete account", error);
+            showToast('Failed to delete account', 'error');
         }
     };
 

@@ -6,10 +6,9 @@ const api = axios.create({
         'Content-Type': 'application/json',
         'Accept': 'application/json',
     },
-    withCredentials: true, // For Sanctum CSRF protection if using SPA auth, but we are using token based for now simpler
+    withCredentials: true,
 });
 
-// Add a request interceptor to add the token to the header
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');

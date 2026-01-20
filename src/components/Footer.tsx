@@ -1,19 +1,21 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../api/axios';
+import { useToast } from './UiFeedbackProvider';
 
 const Footer = () => {
     const [email, setEmail] = useState('');
+    const { showToast } = useToast();
     
     const handleSubscribe = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             await api.post('/newsletter/subscribe', { email });
-            alert('Subscribed to newsletter!');
+            showToast('Subscribed to newsletter!');
             setEmail('');
         } catch (error) {
             console.error(error);
-            alert('Failed to subscribe.');
+            showToast('Failed to subscribe.', 'error');
         }
     };
 

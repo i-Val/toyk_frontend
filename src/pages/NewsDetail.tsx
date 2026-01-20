@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
+import { usePageLoader } from '../components/UiFeedbackProvider';
 
 interface BlogPost {
     id: number;
@@ -15,6 +16,19 @@ const NewsDetail = () => {
     const { slug } = useParams<{ slug: string }>();
     const [post, setPost] = useState<BlogPost | null>(null);
     const [loading, setLoading] = useState(true);
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         api.get(`/blog/${slug}`)
@@ -28,7 +42,7 @@ const NewsDetail = () => {
             });
     }, [slug]);
 
-    if (loading) return <div style={{ padding: '40px', textAlign: 'center' }}>Loading...</div>;
+    if (loading) return null;
     if (!post) return <div style={{ padding: '40px', textAlign: 'center' }}>Post not found</div>;
 
     return (

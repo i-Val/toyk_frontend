@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import api from '../api/axios';
+import { useToast } from '../components/UiFeedbackProvider';
 
 interface Product {
     id: number;
@@ -19,6 +20,7 @@ const ProductList = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [types, setTypes] = useState<any[]>([]);
+    const { showToast } = useToast();
     
     // Filter State
     const [search, setSearch] = useState(searchParams.get('search') || '');
@@ -95,11 +97,11 @@ const ProductList = () => {
                 },
                 (error) => {
                     console.error("Error getting location:", error);
-                    alert("Could not get your location.");
+                    showToast("Could not get your location.", 'error');
                 }
             );
         } else {
-            alert("Geolocation is not supported by this browser.");
+            showToast("Geolocation is not supported by this browser.", 'error');
         }
     };
 

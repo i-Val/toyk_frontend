@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { useToast, usePageLoader } from '../components/UiFeedbackProvider';
 
 interface Review {
     id: number;
@@ -38,6 +39,20 @@ const ProductDetails = () => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [newReview, setNewReview] = useState({ rating: 5, comment: '' });
     const [submittingReview, setSubmittingReview] = useState(false);
+    const { showToast } = useToast();
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -73,9 +88,10 @@ const ProductDetails = () => {
             const res = await api.post(`/products/${id}/reviews`, newReview);
             setReviews([res.data, ...reviews]);
             setNewReview({ rating: 5, comment: '' });
+            showToast('Review submitted successfully');
         } catch (err) {
             console.error("Failed to submit review", err);
-            alert("Failed to submit review");
+            showToast('Failed to submit review', 'error');
         } finally {
             setSubmittingReview(false);
         }
@@ -86,7 +102,7 @@ const ProductDetails = () => {
         return `http://localhost:8000/storage/${path}`;
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return null;
     if (error) return <div style={{ color: 'red' }}>{error}</div>;
     if (!product) return <div>Product not found</div>;
 

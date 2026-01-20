@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../../api/axios';
+import { useToast, useConfirm, usePageLoader } from '../../components/UiFeedbackProvider';
 
 interface Plan {
     id: number;
@@ -21,6 +22,21 @@ const AdminPlans = () => {
         currency_code: 'NGN',
         days: 30
     });
+    const { showToast } = useToast();
+    const { confirm } = useConfirm();
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         fetchPlans();
@@ -39,14 +55,22 @@ const AdminPlans = () => {
     };
 
     const handleDelete = async (id: number) => {
-        if (confirm("Are you sure you want to delete this plan?")) {
-            try {
-                await api.delete(`/admin/plans/${id}`);
-                setPlans(plans.filter(p => p.id !== id));
-            } catch (error) {
-                console.error("Failed to delete plan", error);
-                alert("Failed to delete plan");
-            }
+        const confirmed = await confirm({
+            title: 'Delete Plan',
+            message: 'Are you sure you want to delete this plan?',
+            confirmText: 'Delete',
+            cancelText: 'Cancel',
+        });
+        if (!confirmed) {
+            return;
+        }
+        try {
+            await api.delete(`/admin/plans/${id}`);
+            setPlans(plans.filter(p => p.id !== id));
+            showToast('Plan deleted successfully');
+        } catch (error) {
+            console.error("Failed to delete plan", error);
+            showToast('Failed to delete plan', 'error');
         }
     };
 
@@ -56,15 +80,17 @@ const AdminPlans = () => {
             if (editingPlan) {
                 const res = await api.put(`/admin/plans/${editingPlan.id}`, formData);
                 setPlans(plans.map(p => p.id === editingPlan.id ? res.data : p));
+                showToast('Plan updated successfully');
             } else {
                 const res = await api.post('/admin/plans', formData);
                 setPlans([...plans, res.data]);
+                showToast('Plan created successfully');
             }
             setEditingPlan(null);
             setFormData({ title: '', description: '', price: '', currency_code: 'NGN', days: 30 });
         } catch (error) {
             console.error("Failed to save plan", error);
-            alert("Failed to save plan");
+            showToast('Failed to save plan', 'error');
         }
     };
 
@@ -145,7 +171,7 @@ const AdminPlans = () => {
                 </form>
             </div>
 
-            {loading ? <p>Loading...</p> : (
+            {loading ? null : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
                     {plans.map(plan => (
                         <div key={plan.id} style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '20px', background: '#fff' }}>

@@ -19,6 +19,19 @@ import AdminPages from './pages/admin/AdminPages';
 import AdminContacts from './pages/admin/AdminContacts';
 import AdminReports from './pages/admin/AdminReports';
 import AdminNews from './pages/admin/AdminNews';
+import AdminHomePage from './pages/admin/AdminHomePage';
+import AdminSlides from './pages/admin/AdminSlides';
+import AdminTransactions from './pages/admin/AdminTransactions';
+import AdminNotify from './pages/admin/AdminNotify';
+import AdminCurrency from './pages/admin/AdminCurrency';
+import AdminReviews from './pages/admin/AdminReviews';
+import AdminReviewDetails from './pages/admin/AdminReviewDetails';
+import AdminContactDetails from './pages/admin/AdminContactDetails';
+import AdminSubscribers from './pages/admin/AdminSubscribers';
+import AdminCountries from './pages/admin/AdminCountries';
+import AdminStates from './pages/admin/AdminStates';
+import AdminCities from './pages/admin/AdminCities';
+import AdminSplashMessages from './pages/admin/AdminSplashMessages';
 import EditProduct from './pages/EditProduct';
 import Profile from './pages/Profile';
 import ChangePassword from './pages/ChangePassword';
@@ -31,6 +44,7 @@ import Payments from './pages/Payments';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import Layout from './components/Layout';
+import AdminLayout from './components/AdminLayout';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import Terms from './pages/Terms';
@@ -108,47 +122,156 @@ function App() {
           } />
           <Route path="/admin" element={
             <AdminRoute>
-              <AdminDashboard />
+              <AdminLayout>
+                <AdminDashboard />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/home" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminHomePage />
+              </AdminLayout>
             </AdminRoute>
           } />
           <Route path="/admin/users" element={
             <AdminRoute>
-              <AdminUsers />
+              <AdminLayout>
+                <AdminUsers />
+              </AdminLayout>
             </AdminRoute>
           } />
           <Route path="/admin/products" element={
             <AdminRoute>
-              <AdminProducts />
+              <AdminLayout>
+                <AdminProducts />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/slides" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminSlides />
+              </AdminLayout>
             </AdminRoute>
           } />
           <Route path="/admin/plans" element={
             <AdminRoute>
-              <AdminPlans />
+              <AdminLayout>
+                <AdminPlans />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/transactions" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminTransactions />
+              </AdminLayout>
             </AdminRoute>
           } />
           <Route path="/admin/categories" element={
             <AdminRoute>
-              <AdminCategories />
+              <AdminLayout>
+                <AdminCategories />
+              </AdminLayout>
             </AdminRoute>
           } />
           <Route path="/admin/pages" element={
             <AdminRoute>
-              <AdminPages />
+              <AdminLayout>
+                <AdminPages />
+              </AdminLayout>
             </AdminRoute>
           } />
           <Route path="/admin/contacts" element={
             <AdminRoute>
-              <AdminContacts />
+              <AdminLayout>
+                <AdminContacts />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/contacts/:id" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminContactDetails />
+              </AdminLayout>
             </AdminRoute>
           } />
           <Route path="/admin/reports" element={
             <AdminRoute>
-              <AdminReports />
+              <AdminLayout>
+                <AdminReports />
+              </AdminLayout>
             </AdminRoute>
           } />
           <Route path="/admin/news" element={
             <AdminRoute>
-              <AdminNews />
+              <AdminLayout>
+                <AdminNews />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/currency" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminCurrency />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/splash" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminSplashMessages />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/notify" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminNotify />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/reviews" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminReviews />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/reviews/:id" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminReviewDetails />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/subscribers" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminSubscribers />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/countries" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminCountries />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/states" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminStates />
+              </AdminLayout>
+            </AdminRoute>
+          } />
+          <Route path="/admin/cities" element={
+            <AdminRoute>
+              <AdminLayout>
+                <AdminCities />
+              </AdminLayout>
             </AdminRoute>
           } />
           <Route path="/products/create" element={

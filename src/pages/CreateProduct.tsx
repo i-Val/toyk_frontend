@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../components/UiFeedbackProvider';
 
 const CreateProduct = () => {
     const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const CreateProduct = () => {
     const [types, setTypes] = useState<any[]>([]);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { showToast } = useToast();
 
     useEffect(() => {
         api.get('/form-data').then(res => {
@@ -49,11 +51,11 @@ const CreateProduct = () => {
                 },
                 (error) => {
                     console.error("Error getting location:", error);
-                    alert("Could not get your location.");
+                    showToast("Could not get your location.", 'error');
                 }
             );
         } else {
-            alert("Geolocation is not supported by this browser.");
+            showToast("Geolocation is not supported by this browser.", 'error');
         }
     };
 
@@ -76,10 +78,12 @@ const CreateProduct = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+            showToast('Product created successfully');
             navigate('/');
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to create product');
             console.error(err.response?.data);
+            showToast(err.response?.data?.message || 'Failed to create product', 'error');
         }
     };
 

@@ -28,12 +28,44 @@ const AdminDashboard = () => {
         fetchStats();
     }, []);
 
-    if (loading) return <div>Loading dashboard...</div>;
-
     return (
-        <div style={{ padding: '20px', maxWidth: '1200px', margin: 'auto' }}>
-            <h1>Admin Dashboard</h1>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px', marginTop: '30px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <h1 style={{ fontSize: '1.8rem', margin: 0 }}>Dashboard</h1>
+                <span style={{ fontSize: '0.85rem', color: '#777' }}>Admin / Dashboard</span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '16px', marginBottom: '30px' }}>
+                <div style={summaryCardStyle}>
+                    <div style={{ fontSize: '0.8rem', color: '#777', textTransform: 'uppercase' }}>Total Visits</div>
+                    <div style={{ fontSize: '0.7rem', color: '#999', marginTop: '4px' }}>All time</div>
+                    <div style={summaryValueStyle}>{loading ? '...' : stats.reports_count}</div>
+                </div>
+                <div style={summaryCardStyle}>
+                    <div style={{ fontSize: '0.8rem', color: '#777', textTransform: 'uppercase' }}>Total Users</div>
+                    <div style={{ fontSize: '0.7rem', color: '#999', marginTop: '4px' }}>All time</div>
+                    <div style={summaryValueStyle}>{loading ? '...' : stats.users_count}</div>
+                </div>
+                <div style={summaryCardStyle}>
+                    <div style={{ fontSize: '0.8rem', color: '#777', textTransform: 'uppercase' }}>Total Ads</div>
+                    <div style={{ fontSize: '0.7rem', color: '#999', marginTop: '4px' }}>All time</div>
+                    <div style={summaryValueStyle}>{loading ? '...' : stats.products_count}</div>
+                </div>
+                <div style={summaryCardStyle}>
+                    <div style={{ fontSize: '0.8rem', color: '#777', textTransform: 'uppercase' }}>Total Payments</div>
+                    <div style={{ fontSize: '0.7rem', color: '#999', marginTop: '4px' }}>All time</div>
+                    <div style={summaryValueStyle}>{loading ? '...' : stats.plans_count}</div>
+                </div>
+            </div>
+
+            <div style={{ background: '#fff', border: '1px solid #e2e6ea', borderRadius: '6px', padding: '16px', marginBottom: '30px' }}>
+                <h2 style={{ margin: 0, marginBottom: '10px', fontSize: '1.1rem', textAlign: 'center' }}>Daily Posts Report</h2>
+                <div style={{ border: '1px solid #ddd', height: '260px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: '0.9rem' }}>
+                    Chart placeholder
+                </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
                 <Link to="/admin/users" style={cardStyle}>
                     <h3>Users</h3>
                     <p style={statStyle}>{stats.users_count}</p>
@@ -76,6 +108,20 @@ const AdminDashboard = () => {
         </div>
     );
 };
+
+const summaryCardStyle = {
+    background: '#fff',
+    border: '1px solid #e2e6ea',
+    borderRadius: '6px',
+    padding: '14px 16px',
+};
+
+const summaryValueStyle = {
+    fontSize: '1.6rem',
+    fontWeight: 'bold',
+    color: '#007bff',
+    marginTop: '12px',
+} as const;
 
 const cardStyle = {
     display: 'block',

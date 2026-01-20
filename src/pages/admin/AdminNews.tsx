@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../../api/axios';
+import { useToast, useConfirm, usePageLoader } from '../../components/UiFeedbackProvider';
 
 interface BlogPost {
     id: number;
@@ -18,6 +19,21 @@ const AdminNews = () => {
         content: '',
         image: ''
     });
+    const { showToast } = useToast();
+    const { confirm } = useConfirm();
+    const { startLoading, stopLoading } = usePageLoader();
+
+    useEffect(() => {
+        if (loading) {
+            startLoading();
+        } else {
+            stopLoading();
+        }
+
+        return () => {
+            stopLoading();
+        };
+    }, [loading, startLoading, stopLoading]);
 
     useEffect(() => {
         fetchPosts();
@@ -36,14 +52,22 @@ const AdminNews = () => {
     };
 
     const handleDelete = async (id: number) => {
-        if (confirm("Are you sure you want to delete this post?")) {
-            try {
-                await api.delete(`/admin/blog/${id}`);
-                setPosts(posts.filter(p => p.id !== id));
-            } catch (error) {
-                console.error("Failed to delete post", error);
-                alert("Failed to delete post");
-            }
+        const confirmed = await confirm({
+            title: 'Delete Post',
+            message: 'Are you sure you want to delete this post?',
+            confirmText: 'Delete',
+            cancelText: 'Cancel',
+        });
+        if (!confirmed) {
+            return;
+        }
+        try {
+            await api.delete(`/admin/blog/${id}`);
+            setPosts(posts.filter(p => p.id !== id));
+            showToast('Post deleted successfully');
+        } catch (error) {
+            console.error("Failed to delete post", error);
+            showToast('Failed to delete post', 'error');
         }
     };
 
@@ -53,15 +77,17 @@ const AdminNews = () => {
             if (editingPost) {
                 const res = await api.put(`/admin/blog/${editingPost.id}`, formData);
                 setPosts(posts.map(p => p.id === editingPost.id ? res.data : p));
+                showToast('Post updated successfully');
             } else {
                 const res = await api.post('/admin/blog', formData);
                 setPosts([res.data, ...posts]);
+                showToast('Post created successfully');
             }
             setEditingPost(null);
             setFormData({ title: '', content: '', image: '' });
         } catch (error) {
             console.error("Failed to save post", error);
-            alert("Failed to save post");
+            showToast('Failed to save post', 'error');
         }
     };
 
@@ -82,7 +108,7 @@ const AdminNews = () => {
     return (
         <div style={{ padding: '20px', maxWidth: '1200px', margin: 'auto' }}>
             <h1>Manage News / Blog</h1>
-            
+
             <div style={{ marginBottom: '30px', padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
                 <h3>{editingPost ? 'Edit Post' : 'Add New Post'}</h3>
                 <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '10px', maxWidth: '800px' }}>
@@ -121,28 +147,46 @@ const AdminNews = () => {
                 </form>
             </div>
 
-            {loading ? <p>Loading...</p> : (
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr style={{ textAlign: 'left', background: '#f8f9fa' }}>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Title</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Slug</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {posts.map(post => (
-                            <tr key={post.id}>
-                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{post.title}</td>
-                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{post.slug}</td>
-                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-                                    <button onClick={() => handleEdit(post)} style={{ marginRight: '10px', cursor: 'pointer' }}>Edit</button>
-                                    <button onClick={() => handleDelete(post.id)} style={{ color: 'red', cursor: 'pointer' }}>Delete</button>
-                                </td>
+            {loading ? null : (
+                <div className="overflow-x-auto">
+                    <table className="min-w-full border border-gray-200">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-4 py-2 border text-left text-xs font-semibold text-gray-700">
+                                    Title
+                                </th>
+                                <th className="px-4 py-2 border text-left text-xs font-semibold text-gray-700">
+                                    Slug
+                                </th>
+                                <th className="px-4 py-2 border text-left text-xs font-semibold text-gray-700">
+                                    Actions
+                                </th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {posts.map(post => (
+                                <tr key={post.id} className="hover:bg-gray-50">
+                                    <td className="px-4 py-2 border text-sm">{post.title}</td>
+                                    <td className="px-4 py-2 border text-sm">{post.slug}</td>
+                                    <td className="px-4 py-2 border text-sm">
+                                        <button
+                                            onClick={() => handleEdit(post)}
+                                            className="inline-flex items-center px-2 py-1 mr-2 text-xs font-semibold text-blue-600 border border-blue-600 rounded hover:bg-blue-50"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(post.id)}
+                                            className="inline-flex items-center px-2 py-1 text-xs font-semibold text-red-600 border border-red-600 rounded hover:bg-red-50"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </div>
     );
