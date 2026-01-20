@@ -35,112 +35,78 @@ const AdminDashboard = () => {
                 <span style={{ fontSize: '0.85rem', color: '#777' }}>Admin / Dashboard</span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '16px', marginBottom: '30px' }}>
-                <div style={summaryCardStyle}>
-                    <div style={{ fontSize: '0.8rem', color: '#777', textTransform: 'uppercase' }}>Total Visits</div>
-                    <div style={{ fontSize: '0.7rem', color: '#999', marginTop: '4px' }}>All time</div>
-                    <div style={summaryValueStyle}>{loading ? '...' : stats.reports_count}</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="text-xs text-gray-500 uppercase">Total Visits</div>
+                    <div className="text-xs text-gray-400 mt-1">All time</div>
+                    <div className="text-2xl font-bold text-blue-600 mt-3">{loading ? '...' : stats.reports_count}</div>
                 </div>
-                <div style={summaryCardStyle}>
-                    <div style={{ fontSize: '0.8rem', color: '#777', textTransform: 'uppercase' }}>Total Users</div>
-                    <div style={{ fontSize: '0.7rem', color: '#999', marginTop: '4px' }}>All time</div>
-                    <div style={summaryValueStyle}>{loading ? '...' : stats.users_count}</div>
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="text-xs text-gray-500 uppercase">Total Users</div>
+                    <div className="text-xs text-gray-400 mt-1">All time</div>
+                    <div className="text-2xl font-bold text-blue-600 mt-3">{loading ? '...' : stats.users_count}</div>
                 </div>
-                <div style={summaryCardStyle}>
-                    <div style={{ fontSize: '0.8rem', color: '#777', textTransform: 'uppercase' }}>Total Ads</div>
-                    <div style={{ fontSize: '0.7rem', color: '#999', marginTop: '4px' }}>All time</div>
-                    <div style={summaryValueStyle}>{loading ? '...' : stats.products_count}</div>
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="text-xs text-gray-500 uppercase">Total Ads</div>
+                    <div className="text-xs text-gray-400 mt-1">All time</div>
+                    <div className="text-2xl font-bold text-blue-600 mt-3">{loading ? '...' : stats.products_count}</div>
                 </div>
-                <div style={summaryCardStyle}>
-                    <div style={{ fontSize: '0.8rem', color: '#777', textTransform: 'uppercase' }}>Total Payments</div>
-                    <div style={{ fontSize: '0.7rem', color: '#999', marginTop: '4px' }}>All time</div>
-                    <div style={summaryValueStyle}>{loading ? '...' : stats.plans_count}</div>
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="text-xs text-gray-500 uppercase">Total Payments</div>
+                    <div className="text-xs text-gray-400 mt-1">All time</div>
+                    <div className="text-2xl font-bold text-blue-600 mt-3">{loading ? '...' : stats.plans_count}</div>
                 </div>
             </div>
 
-            <div style={{ background: '#fff', border: '1px solid #e2e6ea', borderRadius: '6px', padding: '16px', marginBottom: '30px' }}>
-                <h2 style={{ margin: 0, marginBottom: '10px', fontSize: '1.1rem', textAlign: 'center' }}>Daily Posts Report</h2>
-                <div style={{ border: '1px solid #ddd', height: '260px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: '0.9rem' }}>
+            <div className="bg-white border border-gray-200 rounded-lg p-4 mb-8">
+                <h2 className="m-0 mb-2.5 text-lg text-center">Daily Posts Report</h2>
+                <div className="border border-gray-300 h-64 flex items-center justify-center text-gray-400 text-sm">
                     Chart placeholder
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
-                <Link to="/admin/users" style={cardStyle}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <Link to="/admin/users" className="block p-5 border border-gray-300 rounded-lg no-underline text-gray-800 bg-gray-50 text-center hover:shadow-md transition-shadow">
                     <h3>Users</h3>
-                    <p style={statStyle}>{stats.users_count}</p>
+                    <p className="text-2xl font-bold text-blue-600 my-2.5">{stats.users_count}</p>
                     <p>Manage Users</p>
                 </Link>
-                <Link to="/admin/products" style={cardStyle}>
+                <Link to="/admin/products" className="block p-5 border border-gray-300 rounded-lg no-underline text-gray-800 bg-gray-50 text-center hover:shadow-md transition-shadow">
                     <h3>Products</h3>
-                    <p style={statStyle}>{stats.products_count}</p>
+                    <p className="text-2xl font-bold text-blue-600 my-2.5">{stats.products_count}</p>
                     <p>Manage Products</p>
                 </Link>
-                <Link to="/admin/categories" style={cardStyle}>
+                <Link to="/admin/categories" className="block p-5 border border-gray-300 rounded-lg no-underline text-gray-800 bg-gray-50 text-center hover:shadow-md transition-shadow">
                     <h3>Categories</h3>
-                    <p style={statStyle}>{stats.categories_count}</p>
+                    <p className="text-2xl font-bold text-blue-600 my-2.5">{stats.categories_count}</p>
                     <p>Manage Categories</p>
                 </Link>
-                <Link to="/admin/plans" style={cardStyle}>
+                <Link to="/admin/plans" className="block p-5 border border-gray-300 rounded-lg no-underline text-gray-800 bg-gray-50 text-center hover:shadow-md transition-shadow">
                     <h3>Plans</h3>
-                    <p style={statStyle}>{stats.plans_count}</p>
+                    <p className="text-2xl font-bold text-blue-600 my-2.5">{stats.plans_count}</p>
                     <p>Manage Membership Plans</p>
                 </Link>
-                <Link to="/admin/pages" style={cardStyle}>
+                <Link to="/admin/pages" className="block p-5 border border-gray-300 rounded-lg no-underline text-gray-800 bg-gray-50 text-center hover:shadow-md transition-shadow">
                     <h3>Pages</h3>
                     <p>Manage Static Pages</p>
                 </Link>
-                <Link to="/admin/contacts" style={cardStyle}>
+                <Link to="/admin/contacts" className="block p-5 border border-gray-300 rounded-lg no-underline text-gray-800 bg-gray-50 text-center hover:shadow-md transition-shadow">
                     <h3>Messages</h3>
-                    <p style={statStyle}>{stats.messages_count}</p>
+                    <p className="text-2xl font-bold text-blue-600 my-2.5">{stats.messages_count}</p>
                     <p>View Contact Messages</p>
                 </Link>
-                <Link to="/admin/reports" style={cardStyle}>
+                <Link to="/admin/reports" className="block p-5 border border-gray-300 rounded-lg no-underline text-gray-800 bg-gray-50 text-center hover:shadow-md transition-shadow">
                     <h3>Reports</h3>
-                    <p style={statStyle}>{stats.reports_count}</p>
+                    <p className="text-2xl font-bold text-blue-600 my-2.5">{stats.reports_count}</p>
                     <p>View Reported Ads</p>
                 </Link>
-                <Link to="/admin/news" style={cardStyle}>
+                <Link to="/admin/news" className="block p-5 border border-gray-300 rounded-lg no-underline text-gray-800 bg-gray-50 text-center hover:shadow-md transition-shadow">
                     <h3>News</h3>
                     <p>Manage Blog Posts</p>
                 </Link>
             </div>
         </div>
     );
-};
-
-const summaryCardStyle = {
-    background: '#fff',
-    border: '1px solid #e2e6ea',
-    borderRadius: '6px',
-    padding: '14px 16px',
-};
-
-const summaryValueStyle = {
-    fontSize: '1.6rem',
-    fontWeight: 'bold',
-    color: '#007bff',
-    marginTop: '12px',
-} as const;
-
-const cardStyle = {
-    display: 'block',
-    padding: '20px',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    textDecoration: 'none',
-    color: '#333',
-    background: '#f8f9fa',
-    textAlign: 'center' as const,
-    transition: 'transform 0.2s',
-    cursor: 'pointer'
-};
-
-const statStyle = {
-    fontSize: '2em',
-    fontWeight: 'bold',
-    color: '#007bff',
-    margin: '10px 0'
 };
 
 export default AdminDashboard;

@@ -8,24 +8,31 @@ const Header = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         navigate(`/products?search=${searchTerm}`);
+        setIsMenuOpen(false);
     };
 
     const is_admin = user?.is_admin;
 
     return (
         <header style={{ background: '#fff', borderBottom: '1px solid #ddd', padding: '15px 0' }}>
-            <div style={{ maxWidth: '1200px', margin: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px' }}>
+            <div className="header-container">
                 {/* Logo */}
                 <Link to="/" style={{ fontSize: '1.5em', fontWeight: 'bold', color: '#0056b3', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                     <img src="/logo.png" alt="Toyk" style={{ height: '40px', marginRight: '10px' }} onError={(e) => (e.currentTarget.style.display = 'none')} />
                     Toyk Market
                 </Link>
 
+                <button className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    ☰
+                </button>
+
                 {/* Search Bar */}
-                <form onSubmit={handleSearch} style={{ display: 'flex', flex: 1, maxWidth: '500px', margin: '0 20px' }}>
+                <form className="search-bar" onSubmit={handleSearch} style={{ display: 'flex', flex: 1, maxWidth: '500px', margin: '0 20px' }}>
                     <input 
                         type="text" 
                         placeholder="Search for products..." 
@@ -39,15 +46,15 @@ const Header = () => {
                 </form>
 
                 {/* Navigation */}
-                <nav style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <Link to="/products" style={{ color: '#333', textDecoration: 'none' }}>Browse</Link>
-                    <Link to="/plans" style={{ color: '#333', textDecoration: 'none' }}>Plans</Link>
-                    <Link to="/contact" style={{ color: '#333', textDecoration: 'none' }}>Contact</Link>
-                    <Link to="/news" style={{ color: '#333', textDecoration: 'none' }}>News</Link>
+                <nav className={`nav-menu ${isMenuOpen ? 'open' : ''}`}>
+                    <Link to="/products" onClick={() => setIsMenuOpen(false)} style={{ color: '#333', textDecoration: 'none' }}>Browse</Link>
+                    <Link to="/plans" onClick={() => setIsMenuOpen(false)} style={{ color: '#333', textDecoration: 'none' }}>Plans</Link>
+                    <Link to="/contact" onClick={() => setIsMenuOpen(false)} style={{ color: '#333', textDecoration: 'none' }}>Contact</Link>
+                    <Link to="/news" onClick={() => setIsMenuOpen(false)} style={{ color: '#333', textDecoration: 'none' }}>News</Link>
                     
                     {user ? (
                         <>
-                            <Link to="/wishlist" style={{ color: '#333', textDecoration: 'none' }}>Wishlist</Link>
+                            <Link to="/wishlist" onClick={() => setIsMenuOpen(false)} style={{ color: '#333', textDecoration: 'none' }}>Wishlist</Link>
                             <div style={{ position: 'relative', display: 'inline-block' }} className="dropdown">
                                 <span 
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -66,19 +73,19 @@ const Header = () => {
                                         borderRadius: '4px',
                                         padding: '10px 0'
                                     }}>
-                                        <Link to="/dashboard" onClick={() => setIsDropdownOpen(false)} style={{ color: 'black', padding: '12px 16px', textDecoration: 'none', display: 'block' }}>Dashboard</Link>
-                                        <Link to="/profile" onClick={() => setIsDropdownOpen(false)} style={{ color: 'black', padding: '12px 16px', textDecoration: 'none', display: 'block' }}>Profile</Link>
-                                        <Link to="/products/create" onClick={() => setIsDropdownOpen(false)} style={{ color: 'black', padding: '12px 16px', textDecoration: 'none', display: 'block' }}>Sell Item</Link>
-                                        {is_admin && <Link to="/admin" onClick={() => setIsDropdownOpen(false)} style={{ color: 'red', padding: '12px 16px', textDecoration: 'none', display: 'block' }}>Admin Panel</Link>}
-                                        <button onClick={() => { setIsDropdownOpen(false); logout(); }} style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '12px 16px', cursor: 'pointer', color: 'black' }}>Logout</button>
+                                        <Link to="/dashboard" onClick={() => { setIsDropdownOpen(false); setIsMenuOpen(false); }} style={{ color: 'black', padding: '12px 16px', textDecoration: 'none', display: 'block' }}>Dashboard</Link>
+                                        <Link to="/profile" onClick={() => { setIsDropdownOpen(false); setIsMenuOpen(false); }} style={{ color: 'black', padding: '12px 16px', textDecoration: 'none', display: 'block' }}>Profile</Link>
+                                        <Link to="/products/create" onClick={() => { setIsDropdownOpen(false); setIsMenuOpen(false); }} style={{ color: 'black', padding: '12px 16px', textDecoration: 'none', display: 'block' }}>Sell Item</Link>
+                                        {is_admin && <Link to="/admin" onClick={() => { setIsDropdownOpen(false); setIsMenuOpen(false); }} style={{ color: 'red', padding: '12px 16px', textDecoration: 'none', display: 'block' }}>Admin Panel</Link>}
+                                        <button onClick={() => { setIsDropdownOpen(false); setIsMenuOpen(false); logout(); }} style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '12px 16px', cursor: 'pointer', color: 'black' }}>Logout</button>
                                     </div>
                                 )}
                             </div>
                         </>
                     ) : (
                         <>
-                            <Link to="/login" style={{ color: '#333', textDecoration: 'none' }}>Login</Link>
-                            <Link to="/register" style={{ padding: '8px 15px', background: '#28a745', color: 'white', borderRadius: '4px', textDecoration: 'none' }}>Register</Link>
+                            <Link to="/login" onClick={() => setIsMenuOpen(false)} style={{ color: '#333', textDecoration: 'none' }}>Login</Link>
+                            <Link to="/register" onClick={() => setIsMenuOpen(false)} style={{ padding: '8px 15px', background: '#28a745', color: 'white', borderRadius: '4px', textDecoration: 'none' }}>Register</Link>
                         </>
                     )}
                 </nav>

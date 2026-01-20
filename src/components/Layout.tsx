@@ -10,7 +10,12 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
     const location = useLocation();
+    const isAdmin = location.pathname.startsWith('/admin');
     const hideCategories = ['/login', '/register', '/admin'].some(path => location.pathname.startsWith(path));
+
+    if (isAdmin) {
+        return <>{children}</>;
+    }
 
     return (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>

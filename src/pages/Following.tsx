@@ -64,7 +64,7 @@ const Following = () => {
     };
 
     return (
-        <div style={{ maxWidth: '1200px', margin: 'auto', padding: '20px', display: 'flex', gap: '30px' }}>
+        <div className="profile-wrapper">
             <UserSidebar />
             <div style={{ flex: 1, border: '1px solid #ddd', padding: '20px', borderRadius: '4px' }}>
                 <h2 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px', marginTop: 0 }}>My Following</h2>

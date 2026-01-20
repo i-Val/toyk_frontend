@@ -11,6 +11,8 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
     const [cmsOpen, setCmsOpen] = useState(false);
     const [autoOpen, setAutoOpen] = useState(false);
 
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
     const isActive = (path: string) => location.pathname === path;
 
     const navItemStyle: React.CSSProperties = {
@@ -50,6 +52,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
     const renderNavLink = (to: string, label: string, icon?: ReactNode) => (
         <Link
             to={to}
+            onClick={() => setSidebarOpen(false)}
             style={{
                 ...navItemStyle,
                 background: isActive(to) ? '#f0f4ff' : 'transparent',
@@ -62,8 +65,13 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
     );
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f6fa' }}>
-            <aside style={{ width: '260px', background: '#fff', borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column' }}>
+        <div className="admin-layout">
+            <div 
+                className={`admin-sidebar-overlay ${sidebarOpen ? 'open' : ''}`} 
+                onClick={() => setSidebarOpen(false)}
+            />
+            
+            <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div style={{ padding: '16px 20px', borderBottom: '1px solid #eee', display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#e3f2fd', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: '#007bff' }}>
                         TM
@@ -139,12 +147,12 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
             </aside>
 
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <header style={{ background: '#007bff', color: '#fff', padding: '10px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <header className="admin-header">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <button
                             type="button"
-                            onClick={() => navigate('/')}
-                            style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.4rem', cursor: 'pointer' }}
+                            className="admin-hamburger"
+                            onClick={() => setSidebarOpen(!sidebarOpen)}
                         >
                             ☰
                         </button>

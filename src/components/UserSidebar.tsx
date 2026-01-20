@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const UserSidebar = () => {
     const location = useLocation();
     const { logout } = useAuth();
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
 
     const isActive = (path: string) => {
         return location.pathname === path;
@@ -26,11 +28,29 @@ const UserSidebar = () => {
     };
 
     return (
-        <div style={{ width: '250px', flexShrink: 0, backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden' }}>
-            <div style={{ backgroundColor: '#003366', color: 'white', padding: '15px 20px', fontWeight: 'bold', fontSize: '18px' }}>
-                My Account
+        <div className="user-sidebar">
+            <div 
+                className="sidebar-header"
+                onClick={() => setIsMobileOpen(!isMobileOpen)}
+                style={{ 
+                    backgroundColor: '#003366', 
+                    color: 'white', 
+                    padding: '15px 20px', 
+                    fontWeight: 'bold', 
+                    fontSize: '18px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                }}
+            >
+                <span>My Account</span>
+                <span className="mobile-toggle-icon" style={{ fontSize: '12px' }}>
+                    {isMobileOpen ? '▲' : '▼'}
+                </span>
             </div>
-            <div style={{ padding: '10px 0' }}>
+            <div className={`sidebar-menu ${isMobileOpen ? 'open' : ''}`} style={{ padding: '10px 0' }}>
                 <Link to="/profile" style={linkStyle('/profile')}>My Profile</Link>
                 <Link to="/profile/password" style={linkStyle('/profile/password')}>Change Password</Link>
                 <Link to="/profile/free-ads" style={linkStyle('/profile/free-ads')}>Free Ads</Link>

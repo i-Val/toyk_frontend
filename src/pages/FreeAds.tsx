@@ -67,7 +67,7 @@ const FreeAds = () => {
     };
 
     return (
-        <div style={{ maxWidth: '1200px', margin: 'auto', padding: '20px', display: 'flex', gap: '30px' }}>
+        <div className="profile-wrapper">
             <UserSidebar />
             
             <div style={{ flex: 1, border: '1px solid #ddd', padding: '20px', borderRadius: '4px' }}>
@@ -79,7 +79,7 @@ const FreeAds = () => {
 
                 <div style={{ display: 'grid', gap: '15px' }}>
                     {ads.map(ad => (
-                        <div key={ad.id} style={{ display: 'flex', border: '1px solid #eee', padding: '10px', gap: '15px' }}>
+                        <div key={ad.id} className="product-list-item">
                             <img 
                                 src={ad.images?.[0]?.image ? `http://localhost:8000/storage/${ad.images[0].image}` : 'https://via.placeholder.com/100'} 
                                 alt={ad.title}

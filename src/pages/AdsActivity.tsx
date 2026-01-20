@@ -45,7 +45,7 @@ const AdsActivity = () => {
     }, []);
 
     return (
-        <div style={{ maxWidth: '1200px', margin: 'auto', padding: '20px', display: 'flex', gap: '30px' }}>
+        <div className="profile-wrapper">
             <UserSidebar />
             
             <div style={{ flex: 1, border: '1px solid #ddd', padding: '20px', borderRadius: '4px' }}>
@@ -56,28 +56,30 @@ const AdsActivity = () => {
                 {!loading && ads.length === 0 && <p>No activity found.</p>}
 
                 {ads.length > 0 && (
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <thead>
-                            <tr style={{ backgroundColor: '#f8f9fa', textAlign: 'left' }}>
-                                <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Ad Title</th>
-                                <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Date Posted</th>
-                                <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Total Views</th>
-                                <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {ads.map(ad => (
-                                <tr key={ad.id}>
-                                    <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{ad.title}</td>
-                                    <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{new Date(ad.created_at).toLocaleDateString()}</td>
-                                    <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{ad.total_views}</td>
-                                    <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>
-                                        <Link to={`/products/${ad.id}`} style={{ color: '#007bff', textDecoration: 'none' }}>View</Link>
-                                    </td>
+                    <div className="responsive-table-container">
+                        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+                            <thead>
+                                <tr style={{ backgroundColor: '#f8f9fa', textAlign: 'left' }}>
+                                    <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Ad Title</th>
+                                    <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Date Posted</th>
+                                    <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Total Views</th>
+                                    <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Action</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {ads.map(ad => (
+                                    <tr key={ad.id}>
+                                        <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{ad.title}</td>
+                                        <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{new Date(ad.created_at).toLocaleDateString()}</td>
+                                        <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{ad.total_views}</td>
+                                        <td style={{ padding: '10px', borderBottom: '1px solid #eee' }}>
+                                            <Link to={`/products/${ad.id}`} style={{ color: '#007bff', textDecoration: 'none' }}>View</Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
         </div>

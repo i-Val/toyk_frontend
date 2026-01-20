@@ -81,7 +81,7 @@ const Profile = () => {
     };
 
     return (
-        <div style={{ maxWidth: '1200px', margin: 'auto', padding: '20px', display: 'flex', gap: '30px' }}>
+        <div className="profile-wrapper">
             <UserSidebar />
             
             <div style={{ flex: 1, border: '1px solid #ddd', padding: '20px', borderRadius: '4px' }}>
@@ -91,14 +91,13 @@ const Profile = () => {
                 {error && <p style={{ color: 'red', padding: '10px', background: '#f8d7da', borderRadius: '4px' }}>{error}</p>}
 
                 <form onSubmit={handleProfileUpdate}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+                    <div className="responsive-grid-2">
                         <div>
                             <input 
                                 type="text" 
                                 placeholder="First Name"
                                 value={formData.first_name} 
                                 onChange={e => setFormData({...formData, first_name: e.target.value})}
-                                required
                                 style={inputStyle}
                             />
                         </div>
@@ -108,93 +107,81 @@ const Profile = () => {
                                 placeholder="Last Name"
                                 value={formData.last_name} 
                                 onChange={e => setFormData({...formData, last_name: e.target.value})}
-                                required
                                 style={inputStyle}
                             />
                         </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+                    <div className="responsive-grid-2">
+                        <div>
+                            <input 
+                                type="text" 
+                                placeholder="Phone"
+                                value={formData.phone} 
+                                onChange={e => setFormData({...formData, phone: e.target.value})}
+                                style={inputStyle}
+                            />
+                        </div>
                         <div>
                             <input 
                                 type="email" 
                                 placeholder="Email"
                                 value={formData.email} 
                                 readOnly
-                                style={{ ...inputStyle, backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
+                                style={{ ...inputStyle, background: '#f9f9f9' }}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="responsive-grid-3">
+                        <div>
+                            <input 
+                                type="text" 
+                                placeholder="Country"
+                                value={formData.country} 
+                                onChange={e => setFormData({...formData, country: e.target.value})}
+                                style={inputStyle}
                             />
                         </div>
                         <div>
                             <input 
                                 type="text" 
-                                placeholder="Phone Number"
-                                value={formData.phone} 
-                                onChange={e => setFormData({...formData, phone: e.target.value})}
-                                required
+                                placeholder="State"
+                                value={formData.state} 
+                                onChange={e => setFormData({...formData, state: e.target.value})}
                                 style={inputStyle}
                             />
-                            <small style={{ display: 'block', marginTop: '5px', color: '#666', fontSize: '12px' }}>
-                                Please add phone number with country code. Eg: +234 1 227 8908
-                            </small>
-                        </div>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-                        <div>
-                            <select 
-                                value={formData.country}
-                                onChange={e => setFormData({...formData, country: e.target.value})}
-                                style={selectStyle}
-                            >
-                                <option value="">-- Country --</option>
-                                <option value="Nigeria">Nigeria</option>
-                                <option value="USA">USA</option>
-                                <option value="UK">UK</option>
-                            </select>
                         </div>
                         <div>
-                            <select 
-                                value={formData.state}
-                                onChange={e => setFormData({...formData, state: e.target.value})}
-                                style={selectStyle}
-                            >
-                                <option value="">-- State --</option>
-                                <option value="Lagos">Lagos</option>
-                                <option value="Abuja">Abuja</option>
-                                <option value="New York">New York</option>
-                            </select>
-                        </div>
-                        <div>
-                            <select 
-                                value={formData.city}
+                            <input 
+                                type="text" 
+                                placeholder="City"
+                                value={formData.city} 
                                 onChange={e => setFormData({...formData, city: e.target.value})}
-                                style={selectStyle}
-                            >
-                                <option value="">-- City --</option>
-                                <option value="Ikeja">Ikeja</option>
-                                <option value="Lekki">Lekki</option>
-                                <option value="Manhattan">Manhattan</option>
-                            </select>
+                                style={inputStyle}
+                            />
                         </div>
                     </div>
 
-                    <div style={{ marginBottom: '20px' }}>
-                        <input 
-                            type="text" 
-                            placeholder="Zipcode"
-                            value={formData.zipcode} 
-                            onChange={e => setFormData({...formData, zipcode: e.target.value})}
-                            style={inputStyle}
-                        />
-                    </div>
-
-                    <div style={{ marginBottom: '20px' }}>
-                        <textarea 
-                            placeholder="Address"
-                            value={formData.address} 
-                            onChange={e => setFormData({...formData, address: e.target.value})}
-                            style={{ ...inputStyle, height: '80px', resize: 'vertical' }}
-                        />
+                    <div className="responsive-grid-2">
+                        <div>
+                            <input 
+                                type="text" 
+                                placeholder="Zipcode"
+                                value={formData.zipcode} 
+                                onChange={e => setFormData({...formData, zipcode: e.target.value})}
+                                style={inputStyle}
+                            />
+                        </div>
+                        <div>
+                            <input 
+                                type="text" 
+                                placeholder="Address"
+                                value={formData.address} 
+                                onChange={e => setFormData({...formData, address: e.target.value})}
+                                style={inputStyle}
+                            />
+                        </div>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

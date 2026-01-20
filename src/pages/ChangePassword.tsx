@@ -42,7 +42,7 @@ const ChangePassword = () => {
     const inputStyle = { width: '100%', padding: '10px', boxSizing: 'border-box' as const, borderRadius: '4px', border: '1px solid #ddd', marginBottom: '20px' };
 
     return (
-        <div style={{ maxWidth: '1200px', margin: 'auto', padding: '20px', display: 'flex', gap: '30px' }}>
+        <div className="profile-wrapper">
             <UserSidebar />
             
             <div style={{ flex: 1, border: '1px solid #ddd', padding: '20px', borderRadius: '4px' }}>
