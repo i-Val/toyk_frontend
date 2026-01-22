@@ -56,6 +56,7 @@ const UserSidebar = () => {
                 <Link to="/profile/free-ads" style={linkStyle('/profile/free-ads')}>Free Ads</Link>
                 <Link to="/profile/upgraded-ads" style={linkStyle('/profile/upgraded-ads')}>Upgraded Ads</Link>
                 <Link to="/profile/activity" style={linkStyle('/profile/activity')}>Ads Activity</Link>
+                <Link to="/profile/stores" style={linkStyle('/profile/stores')}>My Stores</Link>
                 <Link to="/wishlist" style={linkStyle('/wishlist')}>My Wishlist</Link>
                 <Link to="/profile/followers" style={linkStyle('/profile/followers')}>My Followers</Link>
                 <Link to="/profile/following" style={linkStyle('/profile/following')}>My Following</Link>

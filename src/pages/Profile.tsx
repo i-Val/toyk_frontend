@@ -58,7 +58,6 @@ const Profile = () => {
     };
 
     const inputStyle = { width: '100%', padding: '10px', boxSizing: 'border-box' as const, borderRadius: '4px', border: '1px solid #ddd' };
-    const selectStyle = { ...inputStyle, height: '40px' };
 
     const handleDeleteAccount = async () => {
         const confirmed = await confirm({

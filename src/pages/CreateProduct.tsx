@@ -9,6 +9,7 @@ const CreateProduct = () => {
         description: '',
         price: '',
         category_id: '',
+        store_id: '',
         product_type_id: '',
         contact: '',
         expiry: '',
@@ -18,14 +19,22 @@ const CreateProduct = () => {
     const [files, setFiles] = useState<FileList | null>(null);
     const [categories, setCategories] = useState<any[]>([]);
     const [types, setTypes] = useState<any[]>([]);
+    const [stores, setStores] = useState<any[]>([]);
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const { showToast } = useToast();
 
     useEffect(() => {
-        api.get('/form-data').then(res => {
-            setCategories(res.data.categories);
-            setTypes(res.data.types);
+        api.get('/products/create').then(res => {
+            console.log('Create Product Data:', res.data);
+            setCategories(res.data.categories || []);
+            setTypes(res.data.types || []);
+            if (res.data.stores) {
+                setStores(res.data.stores);
+            }
+        }).catch(err => {
+            console.error('Error fetching create product data:', err);
+            showToast('Failed to load form data', 'error');
         });
     }, []);
 
@@ -105,10 +114,26 @@ const CreateProduct = () => {
                     <input type="number" name="price" onChange={handleChange} required style={{ width: '100%', padding: '8px' }} />
                 </div>
                 <div style={{ marginBottom: '10px' }}>
+                    <label>Store (Optional):</label>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <select name="store_id" onChange={handleChange} style={{ width: '100%', padding: '8px' }}>
+                            <option value="">Select a Store</option>
+                            {stores.map((store: any) => (
+                                <option key={store.id} value={store.id}>{store.name}</option>
+                            ))}
+                        </select>
+                        {stores.length === 0 && (
+                            <button type="button" onClick={() => navigate('/my-stores')} style={{ whiteSpace: 'nowrap', padding: '8px' }}>
+                                Create Store
+                            </button>
+                        )}
+                    </div>
+                </div>
+                <div style={{ marginBottom: '10px' }}>
                     <label>Category:</label>
                     <select name="category_id" onChange={handleChange} required style={{ width: '100%', padding: '8px' }}>
                         <option value="">Select Category</option>
-                        {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                        {categories.map(c => <option key={c.id} value={c.id}>{c.title || c.name}</option>)}
                     </select>
                 </div>
                 <div style={{ marginBottom: '10px' }}>

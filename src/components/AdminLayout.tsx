@@ -1,10 +1,9 @@
 import { useState, type ReactNode } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
-    const navigate = useNavigate();
     const { user, logout } = useAuth();
 
     const [manageOpen, setManageOpen] = useState(true);

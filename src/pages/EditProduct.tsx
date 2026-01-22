@@ -177,7 +177,7 @@ const EditProduct = () => {
                     <select name="product_type_id" value={formData.product_type_id} onChange={handleChange} required style={{ width: '100%', padding: '8px' }}>
                         <option value="">Select Type</option>
                         {types.map(type => (
-                            <option key={type.id} value={type.id}>{type.title}</option>
+                            <option key={type.id} value={type.id}>{type.name}</option>
                         ))}
                     </select>
                 </div>

@@ -38,6 +38,9 @@ import ChangePassword from './pages/ChangePassword';
 import FreeAds from './pages/FreeAds';
 import UpgradedAds from './pages/UpgradedAds';
 import AdsActivity from './pages/AdsActivity';
+import MyStores from './pages/MyStores';
+import CreateStore from './pages/CreateStore';
+import EditStore from './pages/EditStore';
 import Followers from './pages/Followers';
 import Following from './pages/Following';
 import Payments from './pages/Payments';
@@ -50,6 +53,7 @@ import NewsDetail from './pages/NewsDetail';
 import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import AboutUs from './pages/AboutUs';
+import PaystackCallback from './pages/PaystackCallback';
 
 function App() {
   return (
@@ -59,6 +63,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<ProductList />} />
+          <Route path="/products/create" element={
+            <PrivateRoute>
+              <CreateProduct />
+            </PrivateRoute>
+          } />
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/pages/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/pages/about-us" element={<AboutUs />} />
@@ -70,6 +79,7 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/paystack/callback" element={<PaystackCallback />} />
           <Route path="/dashboard" element={
             <PrivateRoute>
               <Dashboard />
@@ -98,6 +108,21 @@ function App() {
           <Route path="/profile/activity" element={
             <PrivateRoute>
               <AdsActivity />
+            </PrivateRoute>
+          } />
+          <Route path="/profile/stores" element={
+            <PrivateRoute>
+              <MyStores />
+            </PrivateRoute>
+          } />
+          <Route path="/profile/create-store" element={
+            <PrivateRoute>
+              <CreateStore />
+            </PrivateRoute>
+          } />
+          <Route path="/profile/edit-store/:id" element={
+            <PrivateRoute>
+              <EditStore />
             </PrivateRoute>
           } />
           <Route path="/profile/followers" element={
