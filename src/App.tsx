@@ -54,6 +54,7 @@ import Terms from './pages/Terms';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import AboutUs from './pages/AboutUs';
 import PaystackCallback from './pages/PaystackCallback';
+import FlutterwaveCallback from './pages/FlutterwaveCallback';
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/paystack/callback" element={<PaystackCallback />} />
+          <Route path="/flutterwave/callback" element={<FlutterwaveCallback />} />
           <Route path="/dashboard" element={
             <PrivateRoute>
               <Dashboard />

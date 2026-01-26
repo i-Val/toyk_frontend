@@ -74,62 +74,56 @@ const Home = () => {
 
     const activeSlide = slides[currentSlideIndex] || null;
 
-    const heroStyle: React.CSSProperties = activeSlide && activeSlide.image
-        ? {
-              background: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("${activeSlide.image}")`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              color: 'white',
-              textAlign: 'center',
-              padding: '100px 20px',
-              marginBottom: '40px',
-              backgroundColor: '#333',
-          }
-        : {
-              background: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/hero-bg.jpg")',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              color: 'white',
-              textAlign: 'center',
-              padding: '100px 20px',
-              marginBottom: '40px',
-              backgroundColor: '#333',
-          };
-
     return (
         <div>
             {/* Hero Section (Slider) */}
-            <div style={heroStyle}>
-                <h1 style={{ fontSize: '3em', marginBottom: '20px' }}>
-                    {activeSlide?.title || 'Welcome to Toyk Market'}
-                </h1>
-                <p style={{ fontSize: '1.2em', marginBottom: '30px' }}>
-                    Buy and sell everything from cars to mobile phones.
-                </p>
-                <Link
-                    to="/products"
-                    style={{
-                        padding: '15px 30px',
-                        background: '#007bff',
-                        color: 'white',
-                        textDecoration: 'none',
-                        borderRadius: '5px',
-                        fontSize: '1.1em',
-                    }}
-                >
-                    {activeSlide?.button_title || 'Start Browsing'}
-                </Link>
+            <div className="hero-section">
+                <div className="hero-slide">
+                    <div className="hero-content">
+                        <h1>
+                            {activeSlide?.title || 'Welcome to Toyk Market'}
+                        </h1>
+                        <p>
+                            Buy and sell everything from cars to mobile phones.
+                        </p>
+                        <Link
+                            to="/products"
+                            style={{
+                                padding: '15px 30px',
+                                background: '#dc3545', // Reddish button to match screenshot
+                                color: 'white',
+                                textDecoration: 'none',
+                                borderRadius: '25px',
+                                fontSize: '1.1em',
+                                display: 'inline-block'
+                            }}
+                        >
+                            {activeSlide?.button_title || 'Shop Now'}
+                        </Link>
+                    </div>
+                    <div className="hero-image-container">
+                        {activeSlide?.image ? (
+                            <img 
+                                src={activeSlide.image} 
+                                alt={activeSlide.title} 
+                                className="hero-image"
+                            />
+                        ) : (
+                            <img 
+                                src="/hero-tv.png" // Placeholder or fallback
+                                alt="Toyk Market" 
+                                className="hero-image"
+                                onError={(e) => {
+                                    // Fallback if image fails
+                                    e.currentTarget.src = "https://via.placeholder.com/600x400?text=Toyk+Market";
+                                }}
+                            />
+                        )}
+                    </div>
+                </div>
 
                 {slides.length > 1 && (
-                    <div
-                        style={{
-                            marginTop: '30px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: '20px',
-                        }}
-                    >
+                    <div className="hero-nav-buttons">
                         <button
                             type="button"
                             onClick={() =>
@@ -139,8 +133,8 @@ const Home = () => {
                             }
                             style={{
                                 padding: '8px 12px',
-                                background: 'rgba(0,0,0,0.4)',
-                                color: 'white',
+                                background: 'rgba(0,0,0,0.1)',
+                                color: '#333',
                                 border: 'none',
                                 borderRadius: '4px',
                                 cursor: 'pointer',
@@ -161,8 +155,8 @@ const Home = () => {
                                         border: 'none',
                                         background:
                                             index === currentSlideIndex
-                                                ? '#ffffff'
-                                                : 'rgba(255,255,255,0.5)',
+                                                ? '#dc3545'
+                                                : '#ccc',
                                         cursor: 'pointer',
                                     }}
                                     aria-label={`Go to slide ${index + 1}`}
@@ -178,8 +172,8 @@ const Home = () => {
                             }
                             style={{
                                 padding: '8px 12px',
-                                background: 'rgba(0,0,0,0.4)',
-                                color: 'white',
+                                background: 'rgba(0,0,0,0.1)',
+                                color: '#333',
                                 border: 'none',
                                 borderRadius: '4px',
                                 cursor: 'pointer',

@@ -46,7 +46,7 @@ const Plans = () => {
             });
     }, []);
 
-    const handleSubscribe = async (planId: number) => {
+    const handleSubscribe = async (planId: number, plan: Plan) => {
         if (!user) {
             navigate('/login');
             return;
@@ -55,18 +55,58 @@ const Plans = () => {
         setSubscribing(true);
 
         try {
-            const res = await api.post('/subscribe/init', { plan_id: planId });
-            const authorizationUrl = res.data?.authorization_url;
+            // First initialize on backend to generate reference and log intent
+            const res = await api.post('/subscribe/init', { 
+                plan_id: planId,
+                gateway: 'flutterwave' 
+            });
+            
+            const txRef = res.data?.reference;
 
-            if (authorizationUrl) {
-                window.location.href = authorizationUrl;
-            } else {
-                showToast('Failed to start payment.', 'error');
+            if (!txRef) {
+                showToast('Failed to initialize payment reference.', 'error');
+                setSubscribing(false);
+                return;
             }
+
+            // Call Flutterwave Inline
+            // @ts-ignore
+            if (typeof FlutterwaveCheckout !== 'function') {
+                showToast('Payment gateway not loaded. Please refresh.', 'error');
+                setSubscribing(false);
+                return;
+            }
+
+            // @ts-ignore
+            FlutterwaveCheckout({
+                public_key: 'FLWPUBK_TEST-220cbafd9e89580842123f235c602d91-X',
+                tx_ref: txRef,
+                amount: plan.price,
+                currency: plan.currency_code,
+                payment_options: 'card, mobilemoneyghana, ussd',
+                redirect_url: window.location.origin + '/flutterwave/callback', // Use our own callback
+                meta: {
+                    user_id: user.id,
+                    plan_id: plan.id,
+                },
+                customer: {
+                    email: user.email,
+                    phone_number: user.phone || '',
+                    name: `${user.first_name} ${user.last_name}`,
+                },
+                customizations: {
+                    title: 'Toyk Market Subscription',
+                    description: `Payment for ${plan.title}`,
+                    logo: 'https://toykmarket.com/logo.png', // Update with real logo if available
+                },
+            });
+
+            // Note: Flutterwave Inline might redirect or handle success via callback.
+            // Since we provided redirect_url, it should redirect there on success.
+            
         } catch (err) {
             console.error("Failed to start payment", err);
             showToast('Failed to start payment.', 'error');
-        } finally {
             setSubscribing(false);
         }
     };
@@ -103,7 +143,7 @@ const Plans = () => {
                                 marginTop: '20px',
                                 opacity: subscribing ? 0.8 : 1
                             }}
-                            onClick={() => handleSubscribe(plan.id)}
+                            onClick={() => handleSubscribe(plan.id, plan)}
                             disabled={subscribing}
                         >
                             {subscribing ? 'Redirecting...' : 'Choose Plan'}
